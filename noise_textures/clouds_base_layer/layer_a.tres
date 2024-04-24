@@ -1,0 +1,20 @@
+[gd_resource type="NoiseTexture3D" load_steps=2 format=3 uid="uid://cetcufevo6h1x"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ss620"]
+noise_type = 2
+seed = 16
+frequency = 0.14
+fractal_octaves = 4
+fractal_lacunarity = 1.83
+domain_warp_amplitude = -2.95
+domain_warp_frequency = 0.01
+domain_warp_fractal_octaves = 1
+
+[resource]
+width = 128
+height = 128
+depth = 128
+invert = true
+seamless = true
+seamless_blend_skirt = 0.539
+noise = SubResource("FastNoiseLite_ss620")
