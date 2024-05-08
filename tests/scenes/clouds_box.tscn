@@ -1,0 +1,110 @@
+[gd_scene load_steps=16 format=3 uid="uid://cm362jf25ococ"]
+
+[ext_resource type="Shader" path="res://tests/shaders/tests/clouds_box.gdshader" id="1_k4mir"]
+[ext_resource type="Texture2D" uid="uid://dnhi3y4blu22w" path="res://noise_textures/BlueNoise64Tiled.png" id="2_0532y"]
+[ext_resource type="Script" path="res://scripts/sun_update.gd" id="2_q8xn7"]
+[ext_resource type="Texture2D" uid="uid://cduxucb80dlr7" path="res://noise_textures/map/map.tres" id="3_xg2ls"]
+[ext_resource type="ImageTexture3D" uid="uid://cvb0iwtg15rwv" path="res://noise_textures/clouds_base_layer/clouds_base_layer.tres" id="4_6yrio"]
+[ext_resource type="ImageTexture3D" uid="uid://d1fqsib0b7cx6" path="res://noise_textures/clouds_secondary_layer/clouds_secondary_layer.tres" id="5_mvnqb"]
+[ext_resource type="Script" path="res://scripts/Camera3D.gd" id="7_k8oo8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wp08u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmu5a"]
+albedo_color = Color(21.893, 15.976, 14.793, 1)
+
+[sub_resource type="Gradient" id="Gradient_ntmyw"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jx03a"]
+gradient = SubResource("Gradient_ntmyw")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_snhhs"]
+viewport_path = NodePath("/root/@EditorNode@17147/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxpqo"]
+render_priority = 0
+shader = ExtResource("1_k4mir")
+shader_parameter/MAX_MISSED_STEP = 5
+shader_parameter/MAX_MARCHING_STEPS = 70
+shader_parameter/STEP_SIZE = 40.0
+shader_parameter/LARGE_STEP_SIZE = 110.01
+shader_parameter/max_depth = 1000.0
+shader_parameter/CRUISSING_STEP_SIZE = 0.3
+shader_parameter/LARGE_STEP_CRUISE = 0.3
+shader_parameter/max_depth_crussing = 1000.0
+shader_parameter/MAX_STEPS_LIGHTS = 1
+shader_parameter/STEPS_SIZE_LIGHTS = 0.608
+shader_parameter/SCATTERING_ANISO_FW = 0.38
+shader_parameter/SCATTERING_ANISO_BW = 0.4
+shader_parameter/ABSORPTION_COEFFICIENT_CLOUDS = 0.11
+shader_parameter/ABSORPTION_COEFFICIENT_LIGHT = 0.67
+shader_parameter/ABSORPTION_COEFFICIENT_SUGAR = 0.64
+shader_parameter/sun_energy = 2.05
+shader_parameter/cut_size = 0.0014
+shader_parameter/cut_size2 = 0.00067
+shader_parameter/clouds_type_test = 0.16
+shader_parameter/base_density = 1.0
+shader_parameter/coverage = 0.0
+shader_parameter/second_degrade = 0.0
+shader_parameter/third_degrade = 0.0
+shader_parameter/last_degrade = 0.0
+shader_parameter/n_tiles = 1.0
+shader_parameter/blend_low = 1.0
+shader_parameter/blend_high = 1.0
+shader_parameter/stratus = SubResource("GradientTexture1D_jx03a")
+shader_parameter/cumulus = SubResource("GradientTexture1D_jx03a")
+shader_parameter/cumulonimbus = SubResource("GradientTexture1D_jx03a")
+shader_parameter/boxSize = Vector3(1, 1, 1)
+shader_parameter/sun_position = null
+shader_parameter/voronoi = ExtResource("4_6yrio")
+shader_parameter/voronoi2 = ExtResource("5_mvnqb")
+shader_parameter/blue_noise = ExtResource("2_0532y")
+shader_parameter/prev_frame = SubResource("ViewportTexture_snhhs")
+shader_parameter/map = ExtResource("3_xg2ls")
+
+[sub_resource type="BoxMesh" id="BoxMesh_2y352"]
+material = SubResource("ShaderMaterial_yxpqo")
+size = Vector3(100, 100, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_76raf"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="sun" type="MeshInstance3D" parent="."]
+transform = Transform3D(54.79, 0, 0, 0, 54.79, 0, 0, 0, 54.79, -244.794, 2913.52, -931.942)
+mesh = SubResource("SphereMesh_wp08u")
+surface_material_override/0 = SubResource("StandardMaterial3D_bmu5a")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." node_paths=PackedStringArray("sun")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.47949, 538.444, -31.7558)
+gi_mode = 0
+mesh = SubResource("BoxMesh_2y352")
+script = ExtResource("2_q8xn7")
+sun = NodePath("../sun")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.07422, 4.6992, -0.0179701)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.36377, -0.391158, 0, 0.998352, 0.926136, 0, 0, 0, 3.07897, -4.32515, 2.96494, -4.62636)
+mesh = SubResource("BoxMesh_76raf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.35119, -0.389076, 0, 0.993037, 0.921206, 0, 0, 0, 3.06258, 5.50046, -0.741968, -0.39142)
+mesh = SubResource("BoxMesh_76raf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.34529, -0.388099, 0, 0.990544, 0.918893, 0, 0, 0, 3.05489, -4.00015, -0.665765, 11.233)
+mesh = SubResource("BoxMesh_76raf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.35119, -0.389076, 0, 0.993037, 0.921206, 0, 0, 0, 3.06258, -3.88416, -0.674191, -9.25523)
+mesh = SubResource("BoxMesh_76raf")
+skeleton = NodePath("../..")
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+current = true
+script = ExtResource("7_k8oo8")

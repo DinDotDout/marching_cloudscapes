@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Marching cloudscapes"
+run/main_scene="res://tests/scenes/screen_space_marching_static.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
 
 [debug]
 
@@ -29,6 +29,6 @@ enabled=PackedStringArray("res://addons/noise_texture_composer/plugin.cfg")
 
 [rendering]
 
-anti_aliasing/screen_space_roughness_limiter/limit=1.0
+viewport/hdr_2d=true
 anti_aliasing/quality/screen_space_aa=1
 anti_aliasing/quality/use_taa=true

@@ -11,7 +11,8 @@ var prev_tex: ViewportTexture = tex2
 
 
 func _ready():
-	material = self.get_surface_override_material(0)
+	material = self.get_active_material(0)
+	# material = self.get_surface_override_material(0)
 	tex1.viewport_path = get_viewport().get_path()
 	tex2.viewport_path = get_viewport().get_path()
 	# print(tex1.viewport_path)

@@ -1,0 +1,204 @@
+[gd_scene load_steps=12 format=3 uid="uid://dftowg2ktc7l5"]
+
+[ext_resource type="Script" path="res://scripts/Camera3D.gd" id="1_abwbe"]
+[ext_resource type="Shader" path="res://tests/shaders/tests/screen_space_marching.gdshader" id="1_f85rq"]
+[ext_resource type="Script" path="res://scripts/triangle_mesh.gd" id="2_2umff"]
+[ext_resource type="Texture2D" uid="uid://dnhi3y4blu22w" path="res://noise_textures/BlueNoise64Tiled.png" id="3_2rj2x"]
+[ext_resource type="ImageTexture3D" uid="uid://cvb0iwtg15rwv" path="res://noise_textures/clouds_base_layer/clouds_base_layer.tres" id="3_djajv"]
+
+[sub_resource type="Gradient" id="Gradient_ssfxo"]
+colors = PackedColorArray(0.525186, 0.727664, 0.804315, 1, 1.34766e-06, 0.408561, 0.606134, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4xxf7"]
+gradient = SubResource("Gradient_ssfxo")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rvgo3"]
+render_priority = 0
+shader = ExtResource("1_f85rq")
+shader_parameter/MAX_MARCHING_STEPS = 55
+shader_parameter/STEP_SIZE = 30.0
+shader_parameter/LARGE_STEP_SIZE = 5.0
+shader_parameter/MAX_STEPS_LIGHTS = 6
+shader_parameter/STEPS_SIZE_LIGHTS = 3.864
+shader_parameter/SCATTERING_ANISO_FW = 0.47
+shader_parameter/SCATTERING_ANISO_BW = 0.04
+shader_parameter/ABSORPTION_COEFFICIENT_CLOUDS = 0.28
+shader_parameter/ABSORPTION_COEFFICIENT_LIGHT = 0.69
+shader_parameter/ABSORPTION_COEFFICIENT_SUGAR = 0.72
+shader_parameter/sunPosition = Vector3(0, 1, 1)
+shader_parameter/noise_size = 4.765
+shader_parameter/skybox_dist = 2590.0
+shader_parameter/coverage = 0.46
+shader_parameter/coverage2 = 0.46
+shader_parameter/horizon_fade = 0.458
+shader_parameter/cut_size = 0.0004
+shader_parameter/base_density = 0.64
+shader_parameter/second_degrade = 0.04
+shader_parameter/third_degrade = 0.0
+shader_parameter/last_degrade = 0.0
+shader_parameter/earth_radius = 0.0
+shader_parameter/clouds_min_height = 592.105
+shader_parameter/clouds_max_height = 1326.63
+shader_parameter/sky_color = SubResource("GradientTexture1D_4xxf7")
+shader_parameter/blue_noise = ExtResource("3_2rj2x")
+shader_parameter/voronoi = ExtResource("3_djajv")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_wt8f5"]
+_surfaces = [{
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1, -1, 0, 4, 4, 1e-05),
+"format": 34359738369,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 64, 64, 0, 0, 0, 0, 0, 0, 64, 64, 0, 0, 128, 191, 0, 0, 0, 0)
+}]
+
+[sub_resource type="BoxMesh" id="BoxMesh_36lva"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_k573l"]
+size = Vector2(80.22, 64.595)
+
+[node name="Node3D" type="Node"]
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+current = true
+script = ExtResource("1_abwbe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D2"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_rvgo3")
+cast_shadow = 0
+extra_cull_margin = 16384.0
+gi_mode = 0
+mesh = SubResource("ArrayMesh_wt8f5")
+skeleton = NodePath("../..")
+script = ExtResource("2_2umff")
+metadata/_edit_lock_ = true
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.07422, 1.71197, -0.0179701)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -191.572, 863.405, -688.519)
+mesh = SubResource("BoxMesh_36lva")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.35119, -0.389076, 0, 0.993037, 0.921206, 0, 0, 0, 2.35945, 1.80585, -0.741968, -0.39142)
+mesh = SubResource("BoxMesh_36lva")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.35075, -0.389004, 0.0590075, 0.993037, 0.921206, 0, -0.0453009, 0.00749642, 3.06201, -4.00015, -0.665765, 10.6301)
+mesh = SubResource("BoxMesh_36lva")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(2.35119, -0.389076, 0, 0.993037, 0.921206, 0, 0, 0, 3.06258, -17.9618, 427.352, -60.8907)
+mesh = SubResource("BoxMesh_36lva")
+skeleton = NodePath("../..")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.72744, 0, 13.7016)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.18659, 0)
+mesh = SubResource("PlaneMesh_k573l")
