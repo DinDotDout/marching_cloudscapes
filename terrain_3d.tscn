@@ -1,0 +1,266 @@
+[gd_scene load_steps=19 format=3 uid="uid://fpl8felk1872"]
+
+[ext_resource type="Terrain3DStorage" uid="uid://djah8c8gwk6qf" path="res://tests/scenes/terrain.res" id="1_e6q47"]
+[ext_resource type="Terrain3DTextureList" uid="uid://dal3jhw6241qg" path="res://addons/demo/data/texture_list.tres" id="2_g0pvw"]
+
+[sub_resource type="Gradient" id="Gradient_aq4r3"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4hdwf"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6y3gs"]
+seamless = true
+color_ramp = SubResource("Gradient_aq4r3")
+noise = SubResource("FastNoiseLite_4hdwf")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_3ufd0"]
+_shader_parameters = {
+"_mouse_layer": 2147483648,
+"auto_base_texture": 0,
+"auto_height_reduction": 0.093,
+"auto_overlay_texture": 1,
+"auto_slope": 0.464,
+"blend_sharpness": 0.87,
+"dual_scale_far": null,
+"dual_scale_near": 0.0,
+"dual_scale_reduction": 0.226,
+"dual_scale_texture": 0,
+"height_blending": true,
+"macro_variation1": null,
+"macro_variation2": null,
+"noise1_angle": 0.957,
+"noise1_offset": Vector2(0.5, 0.5),
+"noise1_scale": 0.219,
+"noise2_scale": 0.239,
+"noise3_scale": null,
+"noise_texture": SubResource("NoiseTexture2D_6y3gs"),
+"tri_scale_reduction": null,
+"world_noise_blend_far": null,
+"world_noise_blend_near": null,
+"world_noise_height": 242.8,
+"world_noise_lod_distance": null,
+"world_noise_max_octaves": null,
+"world_noise_min_octaves": null,
+"world_noise_offset": null,
+"world_noise_scale": 8.62
+}
+world_background = 2
+auto_shader = true
+dual_scaling = true
+
+[sub_resource type="Environment" id="Environment_e4sul"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_dcj5h"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Shader" id="Shader_bo1li"]
+code = "
+shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D depth_texture : source_color, hint_depth_texture, filter_nearest, repeat_disable;
+
+uniform float camera_far = 100000.0;
+
+// Mobile renderer HDR mode has limit of 1 or 2. Pack full range depth to RG
+// https://gamedev.stackexchange.com/questions/201151/24bit-float-to-rgb
+vec3 encode_rg(float value) {
+    vec2 kEncodeMul = vec2(1.0, 255.0);
+    float kEncodeBit = 1.0 / 255.0;
+    vec2 color = kEncodeMul * value / camera_far;
+    color = fract(color);
+    color.x -= color.y * kEncodeBit;
+	return vec3(color, 0.);
+}
+	
+void fragment() {
+	float depth = textureLod(depth_texture, SCREEN_UV, 0.).x;
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float depth_linear = -view.z;
+	ALBEDO = encode_rg(depth_linear); // Encoded value for Mobile
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4e643"]
+render_priority = 0
+shader = SubResource("Shader_bo1li")
+shader_parameter/camera_far = 100000.0
+
+[sub_resource type="Environment" id="Environment_xosai"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_evilv"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Shader" id="Shader_g145g"]
+code = "
+shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D depth_texture : source_color, hint_depth_texture, filter_nearest, repeat_disable;
+
+uniform float camera_far = 100000.0;
+
+// Mobile renderer HDR mode has limit of 1 or 2. Pack full range depth to RG
+// https://gamedev.stackexchange.com/questions/201151/24bit-float-to-rgb
+vec3 encode_rg(float value) {
+    vec2 kEncodeMul = vec2(1.0, 255.0);
+    float kEncodeBit = 1.0 / 255.0;
+    vec2 color = kEncodeMul * value / camera_far;
+    color = fract(color);
+    color.x -= color.y * kEncodeBit;
+	return vec3(color, 0.);
+}
+	
+void fragment() {
+	float depth = textureLod(depth_texture, SCREEN_UV, 0.).x;
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float depth_linear = -view.z;
+	ALBEDO = encode_rg(depth_linear); // Encoded value for Mobile
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i4gq5"]
+render_priority = 0
+shader = SubResource("Shader_g145g")
+shader_parameter/camera_far = 100000.0
+
+[sub_resource type="Environment" id="Environment_ltc1x"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ek3wq"]
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Shader" id="Shader_xgpny"]
+code = "
+shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D depth_texture : source_color, hint_depth_texture, filter_nearest, repeat_disable;
+
+uniform float camera_far = 100000.0;
+
+// Mobile renderer HDR mode has limit of 1 or 2. Pack full range depth to RG
+// https://gamedev.stackexchange.com/questions/201151/24bit-float-to-rgb
+vec3 encode_rg(float value) {
+    vec2 kEncodeMul = vec2(1.0, 255.0);
+    float kEncodeBit = 1.0 / 255.0;
+    vec2 color = kEncodeMul * value / camera_far;
+    color = fract(color);
+    color.x -= color.y * kEncodeBit;
+	return vec3(color, 0.);
+}
+	
+void fragment() {
+	float depth = textureLod(depth_texture, SCREEN_UV, 0.).x;
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float depth_linear = -view.z;
+	ALBEDO = encode_rg(depth_linear); // Encoded value for Mobile
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cp2nh"]
+render_priority = 0
+shader = SubResource("Shader_xgpny")
+shader_parameter/camera_far = 100000.0
+
+[node name="Terrain3D" type="Terrain3D"]
+storage = ExtResource("1_e6q47")
+material = SubResource("Terrain3DMaterial_3ufd0")
+texture_list = ExtResource("2_g0pvw")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+positional_shadow_atlas_size = 0
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+canvas_cull_mask = 0
+size = Vector2i(2, 2)
+render_target_update_mode = 1
+
+[node name="MouseCamera3D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(-0.548413, -0.551929, -0.628186, 0, 0.751232, -0.660038, 0.836208, -0.361974, -0.411985, 168.409, 71.3987, -725.75)
+cull_mask = 2147483648
+environment = SubResource("Environment_e4sul")
+projection = 1
+size = 0.1
+far = 100000.0
+
+[node name="ScreenQuad" type="MeshInstance3D" parent="SubViewport/MouseCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+layers = 2147483648
+mesh = SubResource("QuadMesh_dcj5h")
+surface_material_override/0 = SubResource("ShaderMaterial_4e643")
+
+[node name="SubViewport2" type="SubViewport" parent="."]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+positional_shadow_atlas_size = 0
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+canvas_cull_mask = 0
+size = Vector2i(2, 2)
+render_target_update_mode = 1
+
+[node name="MouseCamera3D" type="Camera3D" parent="SubViewport2"]
+transform = Transform3D(-0.543986, 0.214881, 0.811113, 0, 0.966654, -0.256087, -0.839094, -0.139308, -0.525846, 2.9909, -1.05198, -1.49363)
+cull_mask = 2147483648
+environment = SubResource("Environment_xosai")
+projection = 1
+size = 0.1
+far = 100000.0
+
+[node name="ScreenQuad" type="MeshInstance3D" parent="SubViewport2/MouseCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+layers = 2147483648
+mesh = SubResource("QuadMesh_evilv")
+surface_material_override/0 = SubResource("ShaderMaterial_i4gq5")
+
+[node name="SubViewport3" type="SubViewport" parent="."]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+positional_shadow_atlas_size = 0
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+canvas_cull_mask = 0
+size = Vector2i(2, 2)
+render_target_update_mode = 1
+
+[node name="MouseCamera3D" type="Camera3D" parent="SubViewport3"]
+transform = Transform3D(0.509476, -0.092695, 0.855478, 0, 0.994181, 0.107724, -0.860485, -0.0548828, 0.506511, 24.592, 6.81404, 4.72046)
+cull_mask = 2147483648
+environment = SubResource("Environment_ltc1x")
+projection = 1
+size = 0.1
+far = 100000.0
+
+[node name="ScreenQuad" type="MeshInstance3D" parent="SubViewport3/MouseCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+layers = 2147483648
+mesh = SubResource("QuadMesh_ek3wq")
+surface_material_override/0 = SubResource("ShaderMaterial_cp2nh")
