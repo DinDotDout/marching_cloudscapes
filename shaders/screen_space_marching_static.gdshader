@@ -12,8 +12,10 @@ uniform int min_marching_steps:hint_range(1, 200, 5) = 35;
 uniform int max_marching_steps:hint_range(1, 200, 5) = 60;
 
 group_uniforms light_interaction;
-uniform float sun_energy:hint_range(.0, 100.0, .01) = 1.0;
 
+uniform float sun_energy: hint_range(.0, 100.0, .01) = 1.0;
+uniform vec3 ambient_light: source_color = vec3(0.8, 0.8, 1.0);
+uniform float ambient_energy: hint_range(.0, 1.0, .01) = 0.4;
 uniform int max_steps_lights: hint_range(1, 20) = 6;
 uniform float short_light_step: hint_range(.01, 400.0, 10.0) = 600.0;
 uniform float long_light_step: hint_range(.01, 400.0, 10.0) = 600.0;
@@ -195,8 +197,9 @@ vec4 raymarch(in highp vec3 ro, in vec3 rd, in float max_distance_travelled, in 
 				float atmosphere_height = length(samplePosition - vec3(0.0, -EARTH_RADIUS, 0.0)) - EARTH_RADIUS;
 				float normalized_y = clamp((atmosphere_height-clouds_min_height)/(clouds_max_height-clouds_min_height), 0.0, 1.0);
 
-				vec3 ambient = (0.5 + 0.6*normalized_y)*vec3(0.4, 0.6, 1.0)*.2 + vec3(0.4) * max(0.0, 1.0-2.0*normalized_y);
-				ambient = vec3(0.8, 0.8, 1.0)*.4;
+				// vec3 ambient = (0.5 + 0.6*normalized_y)*vec3(0.4, 0.6, 1.0)*.2 + vec3(0.4) * max(0.0, 1.0-2.0*normalized_y);
+				// vec3 ambient = vec3(0.8, 0.8, 1.0)*.4;
+                vec3 ambient = ambient_light*ambient_energy;
 				vec3 radiance = ambient + sun_energy*SUN_LIGHT_COLOR*light_transmittance*phase;
 				radiance *= point_density; // Captured radiance
 				float localExtinction = point_density * scattering_coefficient_clouds;
@@ -231,7 +234,9 @@ vec4 raymarch(in highp vec3 ro, in vec3 rd, in float max_distance_travelled, in 
 					float normalized_y = clamp((atmosphere_height-clouds_min_height)/(clouds_max_height-clouds_min_height), 0.0, 1.0);
 
 					vec3 ambient = (0.5 + 0.6*normalized_y)*vec3(0.4, 0.6, 1.0)*.2 + vec3(0.4) * max(0.0, 1.0-2.0*normalized_y);
-					ambient = vec3(0.8, 0.8, 1.0)*.4;
+					// ambient = vec3(0.8, 0.8, 1.0)*.4;
+                    ambient = ambient_light*ambient_energy;
+
 					vec3 radiance = ambient + sun_energy*SUN_LIGHT_COLOR*light_transmittance*phase;
 					radiance *= point_density; // Captured radiance
 					float localExtinction = point_density * scattering_coefficient_clouds;
