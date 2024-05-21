@@ -419,20 +419,21 @@ void fragment(){
         		// TODO: Combine with !hit and place outside?
 		// NOTE: Will generally not hapen as far plane is usually closer
 		// NOTE: Not needed as being inside the clouds is not an option yet
-        if (distance_to_inner_shell == -1.0){ // We did not intersct
-            ALBEDO = sky+sun;
-            vec3 color = mix(sky, sky+sun, extinction);
-            ALBEDO = color;
-        }
+        // if (distance_to_inner_shell == -1.0){ // We did not intersct
+        //     ALBEDO = sky+sun;
+        //     vec3 color = mix(sky, sky+sun, extinction);
+        //     ALBEDO = color;
+        // }
 
         else {
+            distance_to_travel = min(distance_to_travel, frag.linear_depth);
             float depth = 0.0;
             vec4 result = raymarch(ro, rd, distance_to_travel, mu);
             vec3 energy = result.xyz;
             float transmittance = result.w;
             vec3 clouds = energy * vec3(1.0);
-            vec3 bg_color = texture(bg_texture, SCREEN_UV).rgb;
-            vec3 color = clouds + (bg_color) * (transmittance);
+            vec3 scene = texture(bg_texture, SCREEN_UV).rgb;
+            vec3 color = clouds + scene * (transmittance);
             ALBEDO.rgb = color;
         }
     }
