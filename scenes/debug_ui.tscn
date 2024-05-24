@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=3 uid="uid://dr5xxalp21v8y"]
+
+[ext_resource type="Script" path="res://scripts/debug_ui.gd" id="1_mvyra"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jr2w2"]
+bg_color = Color(0.31802, 0.31802, 0.31802, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qxxv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbda8"]
+
+[node name="PanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(250, 0)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -181.0
+offset_top = 29.0
+offset_right = -34.0
+offset_bottom = 187.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jr2w2")
+script = ExtResource("1_mvyra")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="marching" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2qxxv")
+toggle_mode = true
+button_pressed = true
+text = "normal marching"
+
+[node name="thresh" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="thresh" type="HSlider" parent="VBoxContainer/thresh"]
+custom_minimum_size = Vector2(107.985, 42.975)
+layout_mode = 2
+max_value = 1.0
+step = 0.091
+
+[node name="Label" type="Label" parent="VBoxContainer/thresh"]
+layout_mode = 2
+text = "num"
+
+[node name="min_steps" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="min_steps" type="HSlider" parent="VBoxContainer/min_steps"]
+custom_minimum_size = Vector2(107.985, 42.975)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="Label" type="Label" parent="VBoxContainer/min_steps"]
+layout_mode = 2
+text = "num"
+
+[node name="max_steps" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="max_steps" type="HSlider" parent="VBoxContainer/max_steps"]
+custom_minimum_size = Vector2(107.985, 42.975)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="Label" type="Label" parent="VBoxContainer/max_steps"]
+layout_mode = 2
+text = "num"
+
+[node name="showing_terrain" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rbda8")
+toggle_mode = true
+text = "showing terrain"

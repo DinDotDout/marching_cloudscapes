@@ -1,3 +1,4 @@
+// Some postprocessing tests and effects
 shader_type canvas_item;
 render_mode unshaded;
 
@@ -110,5 +111,4 @@ void fragment()
     //COLOR = vec4(pow(vign*aberr, vec3(0.2+1.0/2.2)), 1.0);
     // aberr = texture(TEXTURE, UV).rgb; 
     // COLOR = vec4(aberr*vign, 1.0);
-
 }

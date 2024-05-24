@@ -1,20 +1,40 @@
-float ray_sphere_distance(vec3 ro, vec3 rd, vec3 sphere_origin, float sphere_rad){
+vec2 ray_sphere_distance(vec3 ro, vec3 rd, vec3 sphere_origin, float sphere_rad){
     vec3 oc = ro - sphere_origin;
     float b = 2.0 * dot(rd, oc);
     float c = dot(oc, oc) - sphere_rad*sphere_rad;
     float disc = b * b - 4.0 * c;
     if (disc < 0.0)
-        return -1.0;
+        return vec2(-1.0);
+        // return -1.0;
+
     float q = (-b - sign(b) * sqrt(disc)) / 2.0;
     float t0 = q;
     float t1 = c / q;
-    // Swap if t0 is greater than t1
     float minT = min(t0, t1);
     float maxT = max(t0, t1);
     t0 = minT;
     t1 = maxT;
-    return mix(t1, t0, step(0.0, t0)); // (t0 < 0.0) ? t1 : t0;
+    return vec2(t0, t1);
 }
+
+// float ray_sphere_distance(vec3 ro, vec3 rd, vec3 sphere_origin, float sphere_rad){
+//     vec3 oc = ro - sphere_origin;
+//     float b = 2.0 * dot(rd, oc);
+//     float c = dot(oc, oc) - sphere_rad*sphere_rad;
+//     float disc = b * b - 4.0 * c;
+//     if (disc < 0.0)
+//         return -1.0;
+//
+//     float q = (-b - sign(b) * sqrt(disc)) / 2.0;
+//     float t0 = q;
+//     float t1 = c / q;
+//     float minT = min(t0, t1);
+//     float maxT = max(t0, t1);
+//     t0 = minT;
+//     t1 = maxT;
+//     float val = mix(t1, t0, step(0.0, t0)); // (t0 < 0.0) ? t1 : t0;
+//     return val;
+// }
 
 float inverse_lerp(float min1, float max1, float value) {
     return (value - min1) / (max1 - min1);

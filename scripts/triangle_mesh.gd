@@ -1,6 +1,6 @@
+# Creates an array mesh with 3 vertices in the shape of a triangle.
 @tool
 extends MeshInstance3D
-
 
 func _ready() -> void:
 	if self.mesh != null:

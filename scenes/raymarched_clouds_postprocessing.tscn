@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4dgf3g0j8hhw"]
+
+[ext_resource type="Material" uid="uid://cjop3qcdhmq6i" path="res://materials/taa.material" id="1_0hhw5"]
+[ext_resource type="Material" uid="uid://cfubsvchaebk3" path="res://materials/exposure.material" id="2_00x1n"]
+[ext_resource type="PackedScene" uid="uid://c20gmg61l3t6s" path="res://scenes/raymarched_clouds.tscn" id="3_e7jab"]
+
+[node name="Node3D" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = ExtResource("1_0hhw5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+own_world_3d = true
+handle_input_locally = false
+use_hdr_2d = true
+size = Vector2i(1152, 648)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="SubViewportContainer/SubViewport"]
+material = ExtResource("2_00x1n")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer/SubViewport/SubViewportContainer2"]
+handle_input_locally = false
+screen_space_aa = 1
+use_taa = true
+use_hdr_2d = true
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="scene" parent="SubViewportContainer/SubViewport/SubViewportContainer2/SubViewport" instance=ExtResource("3_e7jab")]

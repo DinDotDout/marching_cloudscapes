@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://3cs8eww6imct"]
+
+[ext_resource type="PackedScene" uid="uid://dr5xxalp21v8y" path="res://scenes/debug_ui.tscn" id="1_06k7b"]
+[ext_resource type="PackedScene" uid="uid://c20gmg61l3t6s" path="res://scenes/raymarched_clouds.tscn" id="2_saybi"]
+
+[node name="Main" type="Node"]
+
+[node name="PanelContainer" parent="." node_paths=PackedStringArray("scene") instance=ExtResource("1_06k7b")]
+scene = NodePath("../scene")
+
+[node name="scene" parent="." instance=ExtResource("2_saybi")]

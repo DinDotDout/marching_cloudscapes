@@ -40,9 +40,8 @@ void fragment()
     // Marco Salvi's Implementation (by Chris Wyman)
     for(int i = 0; i < samples; i++)
     {
-        vec2 offset = 2.0*vec2(offsets[i]);
+        vec2 offset = vec2(offsets[i]);
         vec3 fetch = RGBToYCoCg(texelFetch(TEXTURE, ivec2(FRAGCOORD.xy)+ivec2(offset), 0).xyz);
-        // vec3 fetch = RGBToYCoCg(texture(TEXTURE, UV+vec2(offsets[i])*TEXTURE_PIXEL_SIZE, 0).xyz);
         colorAvg += fetch;
         colorVar += fetch*fetch;
     }
