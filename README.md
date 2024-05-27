@@ -1,5 +1,8 @@
 # Raymarching Cloudscapes
 ![Cloudscape](https://github.com/DinDotDout/marching_cloudscapes/assets/60853685/86cebc1a-7ec3-482f-8caa-83ad73ec79d5)
+**https://www.youtube.com/watch?v=WHOPX68eTzk&t=40s**
+
+**Terrain shown in the video is from https://github.com/TokisanGames/Terrain3D**
 
 This repository contains the results of my exploration and experimentation with creating realistic cloudscapes using raymarching techniques. Raymarching is a rendering technique to create 3D computer graphics. It's especially useful for rendering volumetric and procedural scenes. While the primary focus is on volumetric clouds, I've also incorporated other effects for a more complete skybox look.
 
