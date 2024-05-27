@@ -1,6 +1,7 @@
 // TODO: Implement proper atmosphere scattering instead of faking it.
 // TODO: Either fix the variable distance step or combine with other model depending
 // on spehere intersections.
+// TODO: Set up sampling as const and profile.
 
 #define TAA_ENABLED // Comment out to enable dithering.
 // #define DISTANCE_BASED_STEP_SIZE
@@ -16,7 +17,7 @@ group_uniforms sampling;
 uniform float fast_march_transmitance_thresh: hint_range(0.0, 1.0, .01) = 0.01;
 uniform int min_marching_steps:hint_range(1, 100, 5) = 35;
 uniform int max_marching_steps:hint_range(1, 100, 5) = 60;
-uniform float stop_distance: hint_range(10000.0, 300000.0, 1000.0) = 8000.0;
+uniform float stop_distance: hint_range(10000.0, 300000.0, 1000.0) = 35000.0;
 #ifdef DISTANCE_BASED_STEP_SIZE
 group_uniforms sampling.distance_based_step_size;
 uniform float min_step_size: hint_range(0, 1000, 5) = 100;
@@ -25,40 +26,40 @@ uniform float step_size_threshold: hint_range(1000.0, 100000.0, 100.0) = 8000.0;
 group_uniforms;
 #endif
 group_uniforms sampling.light_sampling;
-uniform int max_steps_lights: hint_range(1, 20) = 6;
+uniform int max_steps_lights: hint_range(1, 20) = 5;
 uniform float light_step_short: hint_range(.01, 400.0, 10.0) = 100.0;
-uniform float light_step_long: hint_range(.01, 400.0, 10.0) = 320.0;
+uniform float light_step_long: hint_range(.01, 400.0, 10.0) = 400.0;
 group_uniforms;
 
 // NOTE: Could be separated into respective groups but usually they are adjusted together.
 group_uniforms light_interaction;
-uniform float sun_energy: hint_range(.0, 100.0, .01) = 1.0;
+uniform float sun_energy: hint_range(.0, 100.0, .01) = 14.0;
 uniform vec3 ambient_light: source_color = vec3(0.8, 0.8, 1.0);
 uniform float ambient_energy: hint_range(.0, 1.0, .01) = 0.4;
 uniform float scattering_aniso_fw:hint_range(.0, 1.0, .01)  = .8;
 uniform float scattering_aniso_bw:hint_range(.0, 1.0, .01)  = .5;
 uniform float extinction_coefficient_sky:hint_range(.000001, .0001, .000001) = 0.000015; // 0.000012.
-uniform float scattering_coefficient_clouds: hint_range(.001, 1.0, .001) = 0.1; // 0.115 to 0.3 cloudy.
-uniform float scattering_coefficient_sugar: hint_range(.0, 0.05, .0001) = 0.1;
+uniform float scattering_coefficient_clouds: hint_range(.001, 1.0, .001) = 0.3; // 0.115 to 0.3 cloudy.
+uniform float scattering_coefficient_sugar: hint_range(.0, 0.05, .0001) = 0.004;
 
 group_uniforms clouds_wind;
-uniform float wind_speed: hint_range(0.0, 10.0, .01) = 1.0;
+uniform float wind_speed: hint_range(0.0, 10.0, .01) = 10.0;
 
 group_uniforms raymarched_clouds;
 uniform float map_density: hint_range(0.0, 1.0, .01) = 1.0;
 uniform float clouds_min_height: hint_range(10.0, 4000, 10.0) = 1400.0;
 uniform float clouds_max_height: hint_range(900.0, 10000, 10.0) = 4000.0;
-uniform float wheathermap_tile_radius: hint_range(1.0, 100000.00, 100.0) = 1000; // Texture size incircle radius.
+uniform float wheathermap_tile_radius: hint_range(1000.0, 100000.0, 100.0) = 50000.0; // Texture size incircle radius.
 
 group_uniforms raymarched_clouds.noise;
-uniform float noise_weight: hint_range(0.0, 1.0, .01) = 1.0;
-uniform float clouds_noise_scale: hint_range(1000.0, 40000.00, 100.0) = 11000;
+uniform float noise_weight: hint_range(0.0, 1.0, .01) = 0.5;
+uniform float clouds_noise_scale: hint_range(1000.0, 40000.00, 100.0) = 30000.0;
 uniform vec4 clouds_noise_fbm_weights = vec4(0.8, 0.32, 0.8, 1.0);
 uniform sampler3D clouds_texture: source_color;
 
 group_uniforms raymarched_clouds.detail_noise;
-uniform float detail_noise_weight: hint_range(0.0, 0.5, .01) = 0.1;
-uniform float detail_noise_scale: hint_range(1.0, 4000.0, 10.0) = 1000.0;
+uniform float detail_noise_weight: hint_range(0.0, 0.5, .01) = 0.10;
+uniform float detail_noise_scale: hint_range(1.0, 4000.0, 10.0) = 1500.0;
 uniform vec3 detail_noise_fbm_weights = vec3(0.4, 0.8, 0.8);
 uniform sampler3D clouds_detail_texture: source_color;
 group_uniforms;
@@ -70,18 +71,18 @@ uniform sampler2D clouds_height_density: source_color; // TODO: Apply for distan
 group_uniforms high_altitude_clouds;
 uniform sampler3D cirrus: source_color;
 uniform float cirrus_height: hint_range(100.0, 20000.0, 100.0) = 10000.0;
-uniform float cirrus_scale: hint_range(10000.0, 30000, 100) = 1000.0;
-uniform float cirrus_density: hint_range(0.0, 4.0, .001) = 0.0;
+uniform float cirrus_scale: hint_range(10000.0, 30000, 100) = 30000.0;
+uniform float cirrus_density: hint_range(0.0, 4.0, .001) = 3.0;
 uniform float cirrus_coverage: hint_range(0.0, 1.0, .001) = 1.0;
 
 group_uniforms sky;
-uniform vec3 sky_color: source_color = vec3(.5, .675, .89);
-uniform float sky_brightness: hint_range(0.0, 2.0, .01) = 1.7;
-uniform float brightness_gradient_strength: hint_range(0.0, 10.0, .01) = 4.0;
+uniform vec3 sky_color: source_color = vec3(.39, .59, .83);
+uniform float sky_brightness: hint_range(0.0, 2.0, .01) = 1.0;
+uniform float brightness_gradient_strength: hint_range(0.0, 10.0, .01) = 2.5;
 
 group_uniforms sun;
-uniform vec3 sun_position;
-uniform float sun_radius: hint_range(0.0, .01, .0001) = 0.001;
+uniform vec3 sun_position = vec3(0.0, 0.7, 0.7);
+uniform float sun_radius: hint_range(0.0, .01, .0001) = 0.0002;
 group_uniforms;
 
 uniform sampler2D depth_texture : hint_depth_texture, filter_linear_mipmap;
@@ -97,8 +98,8 @@ struct WorldSpaceData {
     float linear_depth;
 };
 
-
 #include "res://shaders/raymarch_utils.gdshaderinc"
+
 float simple_sdf(vec3 p) {
     vec2 normalized_coordinates = (p.xz/(wheathermap_tile_radius*2.0));
     // NOTE: could use more texture channels to sequeeze in more data.
