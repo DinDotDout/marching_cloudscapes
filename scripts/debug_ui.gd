@@ -1,3 +1,5 @@
+# Uniform test script more release mode.
+# WARN: Might be broken as this is intended for my debug purposes.
 extends Control
 
 @export var scene: Node
