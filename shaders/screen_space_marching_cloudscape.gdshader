@@ -39,6 +39,7 @@ uniform float ambient_energy: hint_range(.0, 1.0, .01) = 0.4;
 uniform float scattering_aniso_fw:hint_range(.0, 1.0, .01)  = .8;
 uniform float scattering_aniso_bw:hint_range(.0, 1.0, .01)  = .5;
 uniform float extinction_coefficient_sky:hint_range(.000001, .0001, .000001) = 0.000015; // 0.000012.
+// NOTE: Will refer to it as scattering due to clouds having small absorption and mainly scattering.
 uniform float scattering_coefficient_clouds: hint_range(.001, 1.0, .001) = 0.3; // 0.115 to 0.3 cloudy.
 uniform float scattering_coefficient_sugar: hint_range(.0, 0.05, .0001) = 0.004;
 
@@ -222,11 +223,11 @@ vec4 raymarch(in highp vec3 ro, in vec3 rd, in float max_distance_travelled, in 
             // light_transmittance = lightmarch(sample_position, rd, sun_data);
             vec3 radiance = ambient + sun_energy*SUN_LIGHT_COLOR*light_transmittance*phase;
             radiance *= point_density; // Captured radiance
-            float local_extinction = point_density * scattering_coefficient_clouds;
-            float step_extinction = beers_law(step_size*point_density, scattering_coefficient_clouds);
-            vec3 integrated_scattering = (radiance - radiance * step_extinction) / local_extinction;
+            float local_scattering = point_density * scattering_coefficient_clouds;
+            float step_scattering = beers_law(step_size*point_density, scattering_coefficient_clouds);
+            vec3 integrated_scattering = (radiance - radiance * step_scattering) / local_scattering;
             light.rgb += integrated_scattering*light.a;
-            light.a *= step_extinction;
+            light.a *= step_scattering;
             if (light.a < 0.01) {
                 break;
             }
