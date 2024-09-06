@@ -33,7 +33,7 @@ There are probably more things that I have forgotten to mention.
 
 ## Results
 
-- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 140 fps could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation there was not a goal to achieve better performance for a specific use case, so improvements would need to be done in specific aspects to make it really usable.
+- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 6ms renser time could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation there was not a goal to achieve better performance for a specific use case, so improvements would need to be done in specific aspects to make it really usable.
 
 ## Sources and Inspirations
 
