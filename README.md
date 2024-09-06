@@ -20,12 +20,12 @@ This repository contains the results of my exploration and experimentation with 
    - Marching at increasingly larger steps with various variation functions (linear and non-linear) up to a maximum distance.
    - Marching at larger steps initially and refining with smaller steps once a volume is found and going back to the other method once we failed in detecting a volume a certain amount of times (inspired by the Horizon Zero Dawn technique).
 3. **Noise Construction**:
-   - A 2D map defines surface existence.
-   - Smoothmin combined with three layers of noise (Perlin and Worley).
-   - Detail noise as erosion selectively applied based on transmittance thresholds or in the last stepping method described when looking for volumes. This is skipped based on the two previous conditions to save us some rendering time.
+   - A 2D map defines cloud surface existence. This allows artist authored scenaries or some simple generated noise texture. Otherwise some compute weather system could be set in place for more dynamic cloud changes over time.
+   - Smoothmin combined with three layers of pregenerated noise textures (Perlin and Worley).
+   - Detail noise as erosion from bordera, selectively applied based on transmittance thresholds or in the last stepping method described when looking for volumes. This can be skipped based based on a threshold when transsmittance is slow to save us some time.
 
 4. **Flat Distant Clouds**: To simulate distant clouds, a 3D texture is mapped onto the desired sphere radius and a Y scroll is used to simulate changes over time (a 2D texture could also be used).
-5. **Dithering and Anti-Aliasing**: I employ dithering techniques along with temporal anti-aliasing to reduce the number of steps needed to maintain quality results.
+5. **Dithering and Anti-Aliasing**: Dithering with a scrolling blue noise texture or TAA are used to reduce the number of steps needed to maintain quality results.
 6. **Ray Sphere Intersection**: In order to render the clouds correctly at each point the intersection with two different sphere had to be calculated (inner sphere and outer sphere), and used starting point and end point of the raymarch in order to skip stepping over empty space. Some cases were no intersections are found also had to be taken into account.
 7. **Specific to Godot and this project**: I have used a custom helper addon of my creation [Noise Texture Composer](https://github.com/DinDotDout/noise_texture_composer), in order to combine noise textures into a single one to reduce the amount of texture samples needed in the ray marching loop.
 
@@ -33,7 +33,7 @@ There are probably more things that I have forgotten to mention.
 
 ## Results
 
-- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 6ms renser time could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation there was not a goal to achieve better performance for a specific use case, so improvements would need to be done in specific aspects to make it really usable.
+- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 6ms render time could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation purposes there was no goal to achieve better performance for a specific use case. Some dialing would need to be done to satiay specific project needs.
 
 ## Sources and Inspirations
 
