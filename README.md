@@ -33,7 +33,7 @@ There are probably more things that I have forgotten to mention.
 
 ## Results
 
-- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 6ms render time could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation purposes there was no goal to achieve better performance for a specific use case. Some dialing would need to be done to satiay specific project needs.
+- On a 3440x1440 monitor with an RADEON RX 7700 XT graphics card, 2.8ms render time could be achieved with relative ease with various different uniform setting, although it generally had to be at the cost of rendering distance or looks. Due to the project being for experimentation purposes there was no goal to achieve better performance for a specific use case. Some dialing would need to be done to satiay specific project needs.
 
 ## Sources and Inspirations
 
